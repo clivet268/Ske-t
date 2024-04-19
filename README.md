@@ -1,1 +1,1 @@
-A skateboarding game written in verilog and designed for the xc7a35ticpg236-1L
+A skating game written in Verilog, designed to be run on the Baysys 3
