@@ -22,24 +22,28 @@
 
 //TODO ABREVIATED information for each module
 //TODO timing 
-module GameMaster(input clock, input buttons[4:0], output[7:0] seg, output[3:0] an);
+module GameMaster(input clock, input[4:0] btns, output reg [7:0] seg, output[3:0] an);
     reg gamestate = 0;
-    reg [9:0] score
-    wire[7:0] playdisplay;
-    wire[7:0] scoredisplay;
-    wire anotherclock = 0;
-    wire gameclock = 0;
-    wire scoreclock = 0;
+    reg [9:0] score;
+    wire[7:0] playdisplay = 8'b00000000;
+    wire[7:0] scoredisplay = 8'b00000000;
+    wire slowclock = 0;
+    reg gameclock = 0;
+    reg scoreclock = 0;
 
-    GameClock u0(clock, an);
-    DisplayFourBCD u1(scoreclock, score, [6:0] seg);
+    GameClock u0(clock, slowclock, an);
+    ScoreDisplayBCD u1(scoreclock, score, scoredisplay);
     //TODO game simulation logic in place of the rendereer, that then feeds the renderer
-    PlayRenderer u2(input clock, input[1:0] x, input[1:0] y [1:0], output [7:0] seg);
+    GamePlayer u2(gameclock, an, playdisplay);
     //TODO better clocking
-    always @(posedge anotherclock or negedge anotherclock) begin
+    always @(posedge slowclock) begin
         assign seg = (gamestate==0)?scoredisplay : playdisplay;
-        assign gameclock = (gamestate==0)? 0 : (~gameclock);
-        assign scoreclock = (gamestate==0)? (~scoreclock): 0;
+        if(gamestate == 1) begin
+            gameclock = (~gameclock);
+        end else begin 
+            scoreclock = (~scoreclock);
+        end
+        
     end
 
 endmodule

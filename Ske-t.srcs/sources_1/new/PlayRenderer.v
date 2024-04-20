@@ -1,9 +1,14 @@
 `timescale 1ns / 1ps
 
-// x = 00 -> 11 = Seven Seg 0 -> 3
-// y = [entity index for that spot, 0 -> 3][00 -> 11 = skateboard manhole bird pole] 
+// x = Seven seg an selector
+// entity = [0000 = skateboard manhole bird pole] 
 // TODO how should entities be rendered? if entities have set seegments then just an array of entity types should do
-module PlayRenderer(input clock, input[1:0] x, input[1:0] y [1:0], output [7:0] seg);
-    EntityRenderer u1(y, seg);
-    GroundRenderer u2(clock, x, seg);
+module PlayRenderer(input clock, input[3:0] x, input[3:0] y, output [7:0] seg);
+    reg[7:0] ourbuf= 0;
+    always @(posedge clock) 
+        begin
+            ourbuf = ourbuf+1;
+        //((~x & 4'b0101) != 4'b0000);
+        end
+        assign seg = ourbuf;
 endmodule
