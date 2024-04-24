@@ -34,7 +34,7 @@ module GameMaster(input clock, input[4:0] btns, output reg [7:0] seg, output[3:0
     GameClock u0(clock, slowclock, an);
     ScoreDisplayBCD u1(scoreclock, score, scoredisplay);
     //TODO game simulation logic in place of the rendereer, that then feeds the renderer
-    GamePlayer u2(gameclock, an, playdisplay);
+    GamePlayer u2(gameclock, an, btns, playdisplay);
     //TODO better clocking
     always @(posedge slowclock) begin
         assign seg = (gamestate==0)?scoredisplay : playdisplay;

@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 // x = Seven seg an selector
-// entity = [0000 = skateboard manhole bird pole] 
-module PlayRenderer(input clock, input[3:0] x, input[3:0] y, output [7:0] seg);
+// entity = [000 = manhole bird pole] 
+module PlayRenderer(input clock, input[3:0] x, input[2:0] entities, input[2:0] skateboard, output [7:0] seg);
     reg temp = 0;
     always @(posedge clock) 
         begin
