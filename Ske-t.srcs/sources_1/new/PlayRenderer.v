@@ -2,7 +2,6 @@
 
 // x = Seven seg an selector
 // entity = [0000 = skateboard manhole bird pole] 
-// TODO how should entities be rendered? if entities have set seegments then just an array of entity types should do
 module PlayRenderer(input clock, input[3:0] x, input[3:0] y, output [7:0] seg);
     reg temp = 0;
     always @(posedge clock) 
