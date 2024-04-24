@@ -10,6 +10,7 @@ module GamePlayer(input clock, input[3:0] x, input[4:0] btns, output [7:0] seg);
     W19 Left Advance btns(2)
     T17 Right Receed btns(3)
     U18 Center Dodge btns(4)
+    balls
 */    
     always @(posedge clock)
         begin
