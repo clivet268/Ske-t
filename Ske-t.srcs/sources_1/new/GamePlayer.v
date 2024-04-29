@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module GamePlayer(input gameclock, input[3:0] x, input[4:0] btns, output [7:0] seg, output reg [9:0] score, output reg gamestate);
+module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] seg, output reg [9:0] score, output reg gamestate);
     // 000 - nothing 001 - manhole 010 - bird 100 - pole
     reg [2:0] entities_pos [3:0];
     reg [1:0] skateboard_pos = 2'b00;
@@ -10,7 +10,7 @@ module GamePlayer(input gameclock, input[3:0] x, input[4:0] btns, output [7:0] s
     integer i = 0;
     reg tick = 0;
     
-    PlayRenderer u2(gameclock, x, entities, skateboard, seg);
+    PlayRenderer u2(gameclock, an, entities_pos, skateboard, seg);
 /*
     T18 Up Jump btns(0) 
     U17 Down Duck btns(1)
