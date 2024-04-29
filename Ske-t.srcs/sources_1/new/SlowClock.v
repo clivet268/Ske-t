@@ -6,7 +6,7 @@ module SlowClock(input clk_in, output reg clk_out);
         if (period_count!= 500000 - 1)
             begin
                 period_count<= period_count + 1;
-                clk_out <= 0; //clk_out gets 0.
+                clk_out <= 0; 
             end
         else 
             begin
