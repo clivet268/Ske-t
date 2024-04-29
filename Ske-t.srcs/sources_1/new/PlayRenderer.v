@@ -2,7 +2,7 @@
 
 // x = Seven seg an selector
 // entity = [xx = manhole bird pole] 
-module PlayRenderer(input clock, input[3:0] x, input[2:0] entities, input[2:0] skateboard, output [7:0] seg);
+module PlayRenderer(input clock, input[3:0] x, input reg [2:0] entities [3:0], input[2:0] skateboard, output [7:0] seg);
     reg temp = 0;
     always @(posedge clock) 
         begin

@@ -10,7 +10,7 @@ module GamePlayer(input gameclock, input[3:0] x, input[4:0] btns, output [7:0] s
     integer i = 0;
     reg tick = 0;
     
-    PlayRenderer u2(gameclock, x, entities, skateboard, seg);
+    PlayRenderer u2(gameclock, x, entities_pos, skateboard, seg);
 /*
     T18 Up Jump btns(0) 
     U17 Down Duck btns(1)
