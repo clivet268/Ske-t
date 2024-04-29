@@ -24,7 +24,7 @@
 //TODO timing 
 module GameMaster(input clock, input[4:0] btns, output reg [7:0] seg, output[3:0] an);
     reg gamestate = 0;
-    reg [9:0] score;
+    reg [9:0] score = 10'b0000000000;
     wire[7:0] playdisplay = 8'b00000000;
     wire[7:0] scoredisplay = 8'b00000000;
     wire slowclock = 0;
@@ -43,8 +43,11 @@ module GameMaster(input clock, input[4:0] btns, output reg [7:0] seg, output[3:0
         end else begin 
             scoreclock = (~scoreclock);
         end
-        if(btns != 5'b00000 and gamestate == 0) begin
-            gamestate = 1;
+        if(btns != 5'b00000 & gamestate == 0) begin
+            #1000000; 
+            if(btns != 5'b00000 & gamestate == 0) begin
+                gamestate = 1;
+            end
         end
     end
 
