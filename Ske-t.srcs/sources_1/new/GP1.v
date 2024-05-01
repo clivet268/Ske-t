@@ -1,6 +1,25 @@
 `timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 05/01/2024 05:33:42 AM
+// Design Name: 
+// Module Name: GP1
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
-module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] seg);
+module GP1(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] seg);
     // 000 - nothing 001 - manhole 010 - wrench 100 - bird
     reg [2:0] entities_0 = 3'b100;
     reg [2:0] entities_1 = 3'b001;

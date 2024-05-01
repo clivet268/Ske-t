@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module TwoBitCoutner(input clk, output [1:0] Q);
+module TwoBitCounter(input clk, output [1:0] Q);
     reg [1:0] temp = 0; 
     always @(posedge clk) 
         begin
