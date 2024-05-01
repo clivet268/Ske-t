@@ -1,17 +1,19 @@
 `timescale 1ns / 1ps
 
-module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] seg, output reg [9:0] score, output reg gamestate);
+module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] seg, output reg [9:0] score, output reg die);
     // 000 - nothing 001 - manhole 010 - wrench 100 - bird
     reg [2:0] entities_pos [3:0];
     reg [1:0] skateboard_pos = 2'b00;
     reg [2:0] skateboard = 3'b000;
     reg [5:0] period_count = 0; 
     reg [2:0] next_entity = 3'b000;
-    reg [2:0] current_render ;
+    reg [2:0] current_render = 0;
     integer i = 0;
     reg tick = 0;
     
-    PlayRenderer u2(gameclock, an, entities_pos[current_render], skateboard, seg);
+    PlayRenderer u2(gameclock, 
+    //an, 
+    entities_pos[current_render], skateboard, seg);
 /*
     T18 Up Jump btns(0) 
     U17 Down Duck btns(1)
@@ -57,8 +59,9 @@ module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] 
             default: skateboard=3'b000; //Stand
             endcase
             if (entities_pos[skateboard_pos] != btns[2:0]) begin
-                gamestate = 0;
+                die <= 1;
             end else begin
+                die <= 0;
                 score <= score + 1;
                  next_entity = $dist_uniform(69,0,1) << $dist_uniform(69,0,2);
                  entities_pos[3] = next_entity;

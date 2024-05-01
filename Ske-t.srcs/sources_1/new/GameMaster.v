@@ -20,35 +20,46 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-//TODO ABREVIATED information for each module
+//TODO ABREVIATED information for each module 
 //TODO timing 
-module GameMaster(input clock, input[4:0] btns, output reg [7:0] seg, output[3:0] an);
-    reg gamestate = 0;
+module GameMaster(input clock, input[4:0] btns, output reg [7:0] seg, output [3:0] an);
+    reg gamestate = 1;
     reg [9:0] score = 10'b0000000000;
-    wire[7:0] playdisplay = 8'b00000000;
-    wire[7:0] scoredisplay = 8'b00000000;
-    wire slowclock = 0;
+    wire[7:0] playdisplay = 8'b01111111;
+    wire[7:0] scoredisplay = 8'b11111110;
+    wire slowclock;
     reg gameclock = 0;
+    wire die = 0;
     reg scoreclock = 0;
 
     GameClock u0(clock, slowclock, an);
     ScoreDisplayBCD u1(scoreclock, score, scoredisplay);
     //TODO game simulation logic in place of the rendereer, that then feeds the renderer
-    GamePlayer u2(gameclock, an, btns, playdisplay, gamestate);
+    GamePlayer u2(gameclock, an, btns, playdisplay, die);
     //TODO better clocking
+    
     always @(posedge slowclock) begin
-        assign seg = (gamestate==0)?scoredisplay : playdisplay;
+        seg = playdisplay;
+        gameclock = (~gameclock);
+    end
+    
+    /*
+    always @(posedge slowclock) begin
+        seg = (gamestate==0) ? scoredisplay : playdisplay;
         if(gamestate == 1) begin
-            gameclock = (~gameclock);
+            if(die == 1) begin
+                gamestate = 0;
+            end else begin
+                gameclock = (~gameclock);
+            end
         end else begin 
-            scoreclock = (~scoreclock);
-        end
-        if(btns != 5'b00000 & gamestate == 0) begin
-            #1000000; 
-            if(btns != 5'b00000 & gamestate == 0) begin
+            if(btns != 5'b00000) begin
                 gamestate = 1;
+            end else begin
+            scoreclock = (~scoreclock);
             end
         end
     end
+    */
 
 endmodule
