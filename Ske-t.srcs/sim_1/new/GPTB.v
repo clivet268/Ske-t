@@ -27,14 +27,12 @@ module GPTB();
     reg [4:0] btns = 0;
     wire[3:0] an;
     wire[7:0] seg;
-    reg[7:0] segi = 8'b00000000;
     wire slowclock;    
 
     always #10 clock = ~clock;
     GameClock u0(clock, slowclock, an);
     GamePlayer u1(slowclock, an, btns, seg);
-        initial begin
-        assign seg = segi; 
+        initial begin 
         btns = 5'b00000;
         #2000000;
         btns = 5'b00100;

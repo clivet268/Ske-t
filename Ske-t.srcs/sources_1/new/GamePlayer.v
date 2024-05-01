@@ -2,16 +2,18 @@
 
 module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] seg);
     // 000 - nothing 001 - manhole 010 - wrench 100 - bird
+    reg [2:0] entities_t = 3'b000;
     reg [2:0] entities_0 = 3'b100;
     reg [2:0] entities_1 = 3'b001;
     reg [2:0] entities_2 = 3'b010;
     reg [2:0] entities_3 = 3'b000;
-    reg [1:0] skateboard_pos = 2'b00;
+    reg [1:0] skateboard_pos = 2'b11;
     reg [2:0] skateboard = 3'b000;
-    reg [5:0] period_count = 0; 
+    reg [10:0] period_count = 0; 
     reg [2:0] next_entity = 3'b000;
-    reg [1:0] current_render = 0;
+    reg [1:0] current_render = 2'b00;
     reg tick = 0;
+    reg [3:0] ticka = 0;
     
     PlayRenderer u2(gameclock, entities_0, entities_1, entities_2, entities_3, skateboard, current_render, seg);
 /*
@@ -26,15 +28,23 @@ module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] 
     // is this better or should it sync with ticks
     always @(posedge gameclock)
         begin
-            case(an)
-            4'b1110: current_render = 2'b00;
-            4'b1101: current_render = 2'b01;
-            4'b1011: current_render = 2'b10;
-            4'b0111: current_render = 2'b11;
+            case(btns)
+                1: skateboard=3'b001; //Jump
+                2: skateboard=3'b010; //Duck
+                4: skateboard=3'b011; //Advance 
+                8: skateboard=3'b101; //Dodge
+                16: skateboard=3'b100; //Receed
+            default: skateboard=3'b000; //Stand
             endcase
-            if (period_count!= 100)
+            case(an)
+                4'b1110: current_render = 2'b00;
+                4'b1101: current_render = 2'b01;
+                4'b1011: current_render = 2'b10;
+                4'b0111: current_render = 2'b11;
+            endcase
+            if (period_count <= 200)
                 begin
-                    period_count<= period_count + 1;
+                    period_count <= period_count + 1;
                     tick <= 0; 
                 end
             else 
@@ -48,24 +58,20 @@ module GamePlayer(input gameclock, input[3:0] an, input[4:0] btns, output [7:0] 
     */
     always @ (posedge tick) 
         begin
-            case(btns)
-                1: skateboard=3'b001; //Jump
-                2: skateboard=3'b010; //Duck
-                4: skateboard=3'b011; //Advance 
-                8: skateboard=3'b101; //Dodge
-                16: skateboard=3'b100; //Receed
-            default: skateboard=3'b000; //Stand
-            endcase
+            ticka <= ticka + 1;
+            /*
             if (entities_0 != btns[2:0] & (entities_0 != 0)) begin
                 //die <= 1;
             end else begin
                 //die <= 0;
                 //score <= score + 1;
                  //next_entity = $dist_uniform(69,0,1) << $dist_uniform(69,0,2);
-                 entities_0 = entities_1;
-                 entities_1 = entities_2;
+                 */
+                 entities_t = entities_2;
                  entities_2 = entities_3;
                  entities_3 = entities_0;
-            end
+                 entities_0 = entities_1;
+                 entities_1 = (entities_t == 0) ? 3'b001 : (entities_t << 1);
+            //end
         end 
 endmodule
