@@ -22,11 +22,11 @@ module PlayRenderer(input clock
                 3'b100: seg <= seg & 8'b11111101;//bird
             endcase
             //temp = ((~an & 4'b1010) != 0) ? 1 : 0;
-            seg[0] <= temp;
+            //seg[0] <= temp;
         end
     always @(negedge clock) 
         begin
             //temp = ((~an & 4'b1010) != 0) ? 0 : 1;
-            seg[0] <= temp; 
+            //seg[0] <= temp; 
         end
 endmodule
